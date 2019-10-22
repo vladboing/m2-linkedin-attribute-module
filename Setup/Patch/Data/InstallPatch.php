@@ -47,6 +47,7 @@ class InstallPatch implements DataPatchInterface
                 'label'        => 'Linkedin Profile',
                 'input'        => 'text',
                 'validate_rules' => '{"max_text_length":250, "input_validation":"url"}',
+                'length' => 250,
                 'required'     => false,
                 'visible'      => true,
                 'user_defined' => true,
