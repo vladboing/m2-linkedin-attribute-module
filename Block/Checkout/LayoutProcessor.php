@@ -12,21 +12,18 @@ class LayoutProcessor implements LayoutProcessorInterface
         $customField = [
             'component' => 'Magento_Ui/js/form/element/abstract',
             'config' => [
-                // customScope is used to group elements within a single form (e.g. they can be validated separately)
                 'customScope' => 'shippingAddress.custom_attributes',
                 'customEntry' => null,
                 'template' => 'ui/form/field',
                 'elementTmpl' => 'ui/form/element/input',
-                'tooltip' => [
-                    'description' => 'Linkedin profile',
-                ],
             ],
             'dataScope' => 'shippingAddress.custom_attributes' . '.' . $customAttributeCode,
             'label' => 'Linkedin Profile',
             'provider' => 'checkoutProvider',
-            'sortOrder' => 0,
+            'sortOrder' => 50,
             'validation' => [
-                'required-entry' => false
+                'validate-url' => true,
+                'validate-length' => 250,
             ],
             'options' => [],
             'filterBy' => null,
