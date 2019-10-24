@@ -3,4 +3,11 @@
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
         <plugin name="save-in-quote" type="Elogic\Linkedin\Plugin\Checkout\ShippingInformationManagementPlugin" sortOrder="10"/>
     </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="linkedin_profile" xsi:type="string">sales_order.linkedin_profile</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>
