@@ -17,17 +17,23 @@ class ShippingInformationManagementPlugin
     }
     
     /**
-     * @param ShippingInformationInterface $shippingInformation
-     * @param $cartId
      * @param ShippingInformationManagement $subject
+     * @param $cartId
+     * @param ShippingInformationInterface $shippingInformation
      */
     public function beforeSaveAddressInformation(
         ShippingInformationManagement $subject,
         $cartId,
         ShippingInformationInterface $shippingInformation
     ) {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $session = $objectManager->get('Magento\Customer\Model\Session');
         $extensionAttributes = $shippingInformation->getShippingAddress()->getExtensionAttributes();
-        $linkedinProfile = $extensionAttributes->getLinkedinProfile();
+        if ($session->isLoggedIn()) {
+            $linkedinProfile = $session->getCustomerData()->getCustomAttribute('linkedin_profile')->getValue();
+        } else {
+            $linkedinProfile = $extensionAttributes->getLinkedinProfile();
+        }
         $quote = $this->quoteRepository->getActive($cartId);
         $quote->setLinkedinProfile($linkedinProfile);
     }
