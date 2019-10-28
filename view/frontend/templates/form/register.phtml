@@ -132,7 +132,7 @@
         <div class="field linkedin_profile">
             <label class="label" for="linkedin_profile"><span><?= $block->escapeHtml(__('Linkedin Profile')) ?></span></label>
             <div class="control">
-                <input type="text" name="linkedin_profile" id="linkedin_profile" data-input="linkedin_profile" value="" title="<?= $block->escapeHtmlAttr(__('Linkedin Profile')) ?>" class="input-text" data-validate="{'validate-url':true, 'validate-length':250}" />
+                <input type="text" name="linkedin_profile" id="linkedin_profile" data-input="linkedin_profile" value="<?= $block->getFormData()->getLinkedinProfile() ?>" title="<?= $block->escapeHtmlAttr(__('Linkedin Profile')) ?>" class="input-text" data-validate="{'validate-url':true, 'validate-length':250}" />
             </div>
         </div>
         <div class="field password required">
@@ -173,6 +173,9 @@
         </div>
     </div>
 </form>
+<?php
+print_r($block->debug());
+?>
 <script>
     require([
         'jquery',

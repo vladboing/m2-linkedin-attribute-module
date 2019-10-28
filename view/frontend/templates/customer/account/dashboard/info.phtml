@@ -12,9 +12,9 @@
                 <p>
                     <?php echo $block->escapeHtml($block->getName()) ?><br>
                     <?php echo $block->escapeHtml($block->getCustomer()->getEmail()) ?><br>
-                    <?php $telephoneAttribute = $block->getCustomer()->getCustomAttribute('linkedin_profile'); ?>
-                    <?php if ($telephoneAttribute): ?>
-                        <?php echo $telephoneAttribute->getValue(); ?>
+                    <?php $linkedinAttribute = $block->getCustomer()->getCustomAttribute('linkedin_profile'); ?>
+                    <?php if ($linkedinAttribute): ?>
+                        <?php echo $linkedinAttribute->getValue(); ?>
                     <?php endif; ?>
                 </p>
             </div>

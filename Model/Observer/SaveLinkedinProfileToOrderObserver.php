@@ -24,6 +24,8 @@ class SaveLinkedinProfileToOrderObserver implements ObserverInterface
         $quoteRepository = $this->_objectManager->create('Magento\Quote\Model\QuoteRepository');
         $quote = $quoteRepository->get($order->getQuoteId());
         $order->setLinkedinProfile($quote->getLinkedinProfile());
+        $session = $this->_objectManager->create('Magento\Customer\Model\Session');
+        $session->setLinkedinProfile($order->getLinkedinProfile());
 
         return $this;
     }

@@ -10,4 +10,5 @@
             </argument>
         </arguments>
     </virtualType>
+    <preference for="Magento\Customer\Block\Form\Register" type="Elogic\Linkedin\Block\Form\Register" />
 </config>
