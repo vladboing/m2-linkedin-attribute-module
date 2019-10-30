@@ -36,7 +36,7 @@ class LayoutProcessor implements LayoutProcessorInterface
 
         return $jsLayout;
     }
-    
+
     public function getLinkedinVisibility()
     {
         $visibility = true;
@@ -46,10 +46,10 @@ class LayoutProcessor implements LayoutProcessorInterface
         if ($linkedinProfileIsVisible == 0) {
             $visibility = false;
         }
-        
+
         return $visibility;
     }
-    
+
     public function getLinkedinIsRequired()
     {
         $required = false;
@@ -59,7 +59,7 @@ class LayoutProcessor implements LayoutProcessorInterface
         if ($linkedinProfileIsRequired == 1) {
             $required = true;
         }
-        
+
         return $required;
     }
 }
