@@ -5,21 +5,9 @@ if ($linkedinProfileAttribute) {
 } else {
     $linkedinProfileValue = '';
 }
-function getLinkedinVisibility()
-{
-    $visibility = null;
-    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-    $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
-    $linkedinProfileIsVisible = $attribute->get('customer', 'linkedin_profile')->getIsVisible();
-    if ($linkedinProfileIsVisible == 0) {
-        $visibility = 'hidden';
-    }
-
-    return $visibility;
-}
 ?>
-<fieldset class="fieldset info" <?=getLinkedinVisibility()?>>
-    <div class="field linkedin_profile">
+<fieldset class="fieldset info" <?=$block->getLinkedinVisibility()?>>
+    <div class="field linkedin_profile <?=$block->getLinkedinIsRequired()?>">
         <label class="label" for="linkedin_profile"><span><?= $block->escapeHtml(__('Linkedin Profile')) ?></span></label>
         <div class="control">
             <input type="text" name="linkedin_profile" id="linkedin_profile" data-input="linkedin_profile" value="<?=$linkedinProfileValue?>" title="<?= $block->escapeHtmlAttr(__('Linkedin Profile')) ?>" class="input-text" data-validate="{'validate-url':true, 'validate-length':250}" />

@@ -24,6 +24,7 @@ class LayoutProcessor implements LayoutProcessorInterface
             'validation' => [
                 'validate-url' => true,
                 'validate-length' => 250,
+                'required-entry' => $this->getLinkedinIsRequired(),
             ],
             'options' => [],
             'filterBy' => null,
@@ -47,5 +48,18 @@ class LayoutProcessor implements LayoutProcessorInterface
         }
         
         return $visibility;
+    }
+    
+    public function getLinkedinIsRequired()
+    {
+        $required = false;
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
+        $linkedinProfileIsRequired = $attribute->get('customer', 'linkedin_profile')->getIsRequired();
+        if ($linkedinProfileIsRequired == 1) {
+            $required = true;
+        }
+        
+        return $required;
     }
 }

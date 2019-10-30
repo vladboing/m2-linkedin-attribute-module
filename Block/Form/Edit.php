@@ -2,28 +2,8 @@
 
 namespace Elogic\Linkedin\Block\Form;
 
-class Register extends \Magento\Customer\Block\Form\Register
+class Edit extends \Magento\Customer\Block\Form\Edit
 {
-    public function getFormData()
-    {
-        $data = $this->getData('form_data');
-        if ($data === null) {
-            $formData = $this->_customerSession->getCustomerFormData(true);
-            $data = new \Magento\Framework\DataObject();
-            if ($formData) {
-                $data->addData($formData);
-                $linkedinProfile = ['linkedin_profile' => $this->_customerSession->getLinkedinProfile()];
-                $data->addData($linkedinProfile);
-                $data->setCustomerData(1);
-            }
-            if (isset($data['region_id'])) {
-                $data['region_id'] = (int)$data['region_id'];
-            }
-            $this->setData('form_data', $data);
-        }
-        return $data;
-    }
-
     public function getLinkedinVisibility()
     {
         $visibility = null;
@@ -33,7 +13,6 @@ class Register extends \Magento\Customer\Block\Form\Register
         if ($linkedinProfileIsVisible == 0) {
             $visibility = 'hidden';
         }
-
         return $visibility;
     }
 
@@ -46,7 +25,6 @@ class Register extends \Magento\Customer\Block\Form\Register
         if ($linkedinProfileIsRequired == 1) {
             $required = 'required';
         }
-
         return $required;
     }
 }

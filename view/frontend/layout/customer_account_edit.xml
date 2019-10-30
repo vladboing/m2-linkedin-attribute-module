@@ -3,7 +3,7 @@
     <body>
         <referenceContainer name="content">
             <referenceContainer name="form.additional.info">
-                <block class="Magento\Customer\Block\Form\Edit"  template="Elogic_Linkedin::form/additionalinfocustomer.phtml"/>
+                <block class="Elogic\Linkedin\Block\Form\Edit"  template="Elogic_Linkedin::form/additionalinfocustomer.phtml"/>
             </referenceContainer>
         </referenceContainer>
     </body>
