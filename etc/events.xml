@@ -3,4 +3,7 @@
     <event name="sales_model_service_quote_submit_before">
         <observer name="elogic_linkedin" instance="Elogic\Linkedin\Model\Observer\SaveLinkedinProfileToOrderObserver"/>
     </event>
+    <event name="admin_system_config_changed_section_customer">
+        <observer name="custom_admin_system_config_changed_section_customer" instance="Elogic\Linkedin\Model\Observer\ConfigChange"/>
+    </event>
 </config>
