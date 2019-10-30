@@ -23,4 +23,17 @@ class Register extends \Magento\Customer\Block\Form\Register
         }
         return $data;
     }
+
+    public function getLinkedinVisibility()
+    {
+        $visibility = null;
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
+        $linkedinProfileIsVisible = $attribute->get('customer', 'linkedin_profile')->getIsVisible();
+        if ($linkedinProfileIsVisible == 0) {
+            $visibility = 'hidden';
+        }
+
+        return $visibility;
+    }
 }

@@ -28,11 +28,24 @@ class LayoutProcessor implements LayoutProcessorInterface
             'options' => [],
             'filterBy' => null,
             'customEntry' => null,
-            'visible' => true,
+            'visible' => $this->getLinkedinVisibility(),
         ];
 
         $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shipping-address-fieldset']['children'][$customAttributeCode] = $customField;
 
         return $jsLayout;
+    }
+    
+    public function getLinkedinVisibility()
+    {
+        $visibility = true;
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
+        $linkedinProfileIsVisible = $attribute->get('customer', 'linkedin_profile')->getIsVisible();
+        if ($linkedinProfileIsVisible == 0) {
+            $visibility = false;
+        }
+        
+        return $visibility;
     }
 }
