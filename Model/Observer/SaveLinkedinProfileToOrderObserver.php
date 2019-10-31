@@ -2,30 +2,40 @@
 
 namespace Elogic\Linkedin\Model\Observer;
 
+use Magento\Customer\Model\SessionFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\ObjectManagerInterface;
+use Magento\Quote\Model\QuoteRepositoryFactory;
 
 class SaveLinkedinProfileToOrderObserver implements ObserverInterface
 {
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $_objectManager;
+    protected $quoteRepository;
+    protected $session;
 
-    public function __construct(ObjectManagerInterface $objectManager)
-    {
-        $this->_objectManager = $objectManager;
+    /**
+     * SaveLinkedinProfileToOrderObserver constructor.
+     * @param QuoteRepositoryFactory $quoteRepository
+     * @param SessionFactory $session
+     */
+    public function __construct(
+        QuoteRepositoryFactory $quoteRepository,
+        SessionFactory $session
+    ) {
+        $this->quoteRepository = $quoteRepository;
+        $this->session = $session;
     }
 
+    /**
+     * Observer execute($observer) method.
+     * @param Observer $observer
+     * @return $this|void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function execute(Observer $observer)
     {
-        $order = $observer->getOrder();
-        $quoteRepository = $this->_objectManager->create('Magento\Quote\Model\QuoteRepository');
-        $quote = $quoteRepository->get($order->getQuoteId());
-        $order->setLinkedinProfile($quote->getLinkedinProfile());
-        $session = $this->_objectManager->create('Magento\Customer\Model\Session');
-        $session->setLinkedinProfile($order->getLinkedinProfile());
+        $quote = $this->quoteRepository->create()->get($observer->getOrder()->getQuoteId());
+        $observer->getOrder()->setLinkedinProfile($quote->getLinkedinProfile());
+        $this->session->create()->setLinkedinProfile($observer->getOrder()->getLinkedinProfile());
 
         return $this;
     }

@@ -3,12 +3,36 @@
 namespace Elogic\Linkedin\Block\Checkout;
 
 use Magento\Checkout\Block\Checkout\LayoutProcessorInterface;
+use Magento\Eav\Model\AttributeRepository;
 
 class LayoutProcessor implements LayoutProcessorInterface
 {
+    protected const AttributeCode = 'linkedin_profile';
+    protected const No = 0;
+    protected const Yes = 1;
+    protected const Visible = true;
+    protected const NotVisible = false;
+    protected const Required = true;
+    protected const NotRequired = false;
+    protected $attributeRepository;
+
+    /**
+     * LayoutProcessor constructor.
+     * @param AttributeRepository $attributeRepository
+     */
+    public function __construct(AttributeRepository $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
+    /**
+     * LayoutProcessor process($jsLayout) method.
+     * @param array $jsLayout
+     * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function process($jsLayout)
     {
-        $customAttributeCode = 'linkedin_profile';
         $customField = [
             'component' => 'Magento_Ui/js/form/element/abstract',
             'config' => [
@@ -17,7 +41,7 @@ class LayoutProcessor implements LayoutProcessorInterface
                 'template' => 'ui/form/field',
                 'elementTmpl' => 'ui/form/element/input',
             ],
-            'dataScope' => 'shippingAddress.custom_attributes' . '.' . $customAttributeCode,
+            'dataScope' => 'shippingAddress.custom_attributes' . '.' . self::AttributeCode,
             'label' => 'Linkedin Profile',
             'provider' => 'checkoutProvider',
             'sortOrder' => 50,
@@ -32,32 +56,38 @@ class LayoutProcessor implements LayoutProcessorInterface
             'visible' => $this->getLinkedinVisibility(),
         ];
 
-        $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shipping-address-fieldset']['children'][$customAttributeCode] = $customField;
+        $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shipping-address-fieldset']['children'][self::AttributeCode] = $customField;
 
         return $jsLayout;
     }
 
+    /**
+     * Discovering if the Linkedin Profile field is a visible field.
+     * @return bool
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLinkedinVisibility()
     {
-        $visibility = true;
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
-        $linkedinProfileIsVisible = $attribute->get('customer', 'linkedin_profile')->getIsVisible();
-        if ($linkedinProfileIsVisible == 0) {
-            $visibility = false;
+        $visibility = self::Visible;
+        $linkedinProfileIsVisible = $this->attributeRepository->get('customer', 'linkedin_profile')->getIsVisible();
+        if ($linkedinProfileIsVisible == self::No) {
+            $visibility = self::NotVisible;
         }
 
         return $visibility;
     }
 
+    /**
+     * Discovering if the Linkedin Profile is a required field.
+     * @return bool
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLinkedinIsRequired()
     {
-        $required = false;
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
-        $linkedinProfileIsRequired = $attribute->get('customer', 'linkedin_profile')->getIsRequired();
-        if ($linkedinProfileIsRequired == 1) {
-            $required = true;
+        $required = self::NotRequired;
+        $linkedinProfileIsRequired = $this->attributeRepository->get('customer', 'linkedin_profile')->getIsRequired();
+        if ($linkedinProfileIsRequired == self::Yes) {
+            $required = self::Required;
         }
 
         return $required;

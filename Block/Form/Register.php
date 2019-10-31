@@ -2,8 +2,51 @@
 
 namespace Elogic\Linkedin\Block\Form;
 
+use Magento\Eav\Model\AttributeRepositoryFactory;
+
 class Register extends \Magento\Customer\Block\Form\Register
 {
+    protected const No = 0;
+    protected const Yes = 1;
+    protected const NotVisible = null;
+    protected const NotRequired = null;
+    protected $attributeRepository;
+
+    /**
+     * Register constructor.
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param \Magento\Directory\Helper\Data $directoryHelper
+     * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
+     * @param \Magento\Framework\App\Cache\Type\Config $configCacheType
+     * @param \Magento\Directory\Model\ResourceModel\Region\CollectionFactory $regionCollectionFactory
+     * @param \Magento\Directory\Model\ResourceModel\Country\CollectionFactory $countryCollectionFactory
+     * @param \Magento\Framework\Module\Manager $moduleManager
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Url $customerUrl
+     * @param AttributeRepositoryFactory $attributeRepositoryFactory
+     * @param array $data
+     */
+    public function __construct(
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Directory\Helper\Data $directoryHelper,
+        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
+        \Magento\Framework\App\Cache\Type\Config $configCacheType,
+        \Magento\Directory\Model\ResourceModel\Region\CollectionFactory $regionCollectionFactory,
+        \Magento\Directory\Model\ResourceModel\Country\CollectionFactory $countryCollectionFactory,
+        \Magento\Framework\Module\Manager $moduleManager,
+        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Customer\Model\Url $customerUrl,
+        AttributeRepositoryFactory $attributeRepositoryFactory,
+        array $data = []
+    ) {
+        $this->attributeRepository = $attributeRepositoryFactory;
+        parent::__construct($context, $directoryHelper, $jsonEncoder, $configCacheType, $regionCollectionFactory, $countryCollectionFactory, $moduleManager, $customerSession, $customerUrl, $data);
+    }
+
+    /**
+     * Customized \Magento\Customer\Block\Form\Register getFormData() method.
+     * @return \Magento\Framework\DataObject|mixed
+     */
     public function getFormData()
     {
         $data = $this->getData('form_data');
@@ -24,26 +67,32 @@ class Register extends \Magento\Customer\Block\Form\Register
         return $data;
     }
 
+    /**
+     * Discover if the Linkedin Profile field is a visible field.
+     * @return string|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLinkedinVisibility()
     {
-        $visibility = null;
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
-        $linkedinProfileIsVisible = $attribute->get('customer', 'linkedin_profile')->getIsVisible();
-        if ($linkedinProfileIsVisible == 0) {
+        $visibility = self::NotVisible;
+        $linkedinProfileIsVisible = $this->attributeRepository->create()->get('customer', 'linkedin_profile')->getIsVisible();
+        if ($linkedinProfileIsVisible == self::No) {
             $visibility = 'hidden';
         }
 
         return $visibility;
     }
 
+    /**
+     * Discover if the Linkedin Profile field is a required field.
+     * @return string|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLinkedinIsRequired()
     {
-        $required = null;
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $attribute = $objectManager->create('Magento\Eav\Model\AttributeRepository');
-        $linkedinProfileIsRequired = $attribute->get('customer', 'linkedin_profile')->getIsRequired();
-        if ($linkedinProfileIsRequired == 1) {
+        $required = self::NotRequired;
+        $linkedinProfileIsRequired = $this->attributeRepository->create()->get('customer', 'linkedin_profile')->getIsRequired();
+        if ($linkedinProfileIsRequired == self::Yes) {
             $required = 'required';
         }
 

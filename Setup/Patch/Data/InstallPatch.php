@@ -19,6 +19,12 @@ class InstallPatch implements DataPatchInterface
     /** @var AttributeSetFactory */
     protected $attributeSetFactory;
 
+    /**
+     * InstallPatch constructor.
+     * @param ModuleDataSetupInterface $moduleDataSetup
+     * @param CustomerSetupFactory $customerSetupFactory
+     * @param AttributeSetFactory $attributeSetFactory
+     */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
         CustomerSetupFactory $customerSetupFactory,
@@ -29,6 +35,11 @@ class InstallPatch implements DataPatchInterface
         $this->attributeSetFactory = $attributeSetFactory;
     }
 
+    /**
+     * InstallPatch apply() method.
+     * @return DataPatchInterface|void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function apply()
     {
         $customerSetup = $this->customerSetupFactory->create(['setup' => $this->moduleDataSetup]);
