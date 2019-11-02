@@ -7,13 +7,13 @@ use Magento\Eav\Model\AttributeRepository;
 
 class LayoutProcessor implements LayoutProcessorInterface
 {
-    protected const AttributeCode = 'linkedin_profile';
-    protected const No = 0;
-    protected const Yes = 1;
-    protected const Visible = true;
-    protected const NotVisible = false;
-    protected const Required = true;
-    protected const NotRequired = false;
+    protected const ATTRIBUTE_CODE = 'linkedin_profile';
+    protected const NO = 0;
+    protected const YES = 1;
+    protected const VISIBLE = true;
+    protected const NOT_VISIBLE = false;
+    protected const REQUIRED = true;
+    protected const NOT_REQUIRED = false;
     protected $attributeRepository;
 
     /**
@@ -41,7 +41,7 @@ class LayoutProcessor implements LayoutProcessorInterface
                 'template' => 'ui/form/field',
                 'elementTmpl' => 'ui/form/element/input',
             ],
-            'dataScope' => 'shippingAddress.custom_attributes' . '.' . self::AttributeCode,
+            'dataScope' => 'shippingAddress.custom_attributes' . '.' . self::ATTRIBUTE_CODE,
             'label' => 'Linkedin Profile',
             'provider' => 'checkoutProvider',
             'sortOrder' => 50,
@@ -68,10 +68,10 @@ class LayoutProcessor implements LayoutProcessorInterface
      */
     public function getLinkedinVisibility()
     {
-        $visibility = self::Visible;
+        $visibility = self::VISIBLE;
         $linkedinProfileIsVisible = $this->attributeRepository->get('customer', 'linkedin_profile')->getIsVisible();
-        if ($linkedinProfileIsVisible == self::No) {
-            $visibility = self::NotVisible;
+        if ($linkedinProfileIsVisible == self::NO) {
+            $visibility = self::NOT_VISIBLE;
         }
 
         return $visibility;
@@ -84,10 +84,10 @@ class LayoutProcessor implements LayoutProcessorInterface
      */
     public function getLinkedinIsRequired()
     {
-        $required = self::NotRequired;
+        $required = self::NOT_REQUIRED;
         $linkedinProfileIsRequired = $this->attributeRepository->get('customer', 'linkedin_profile')->getIsRequired();
-        if ($linkedinProfileIsRequired == self::Yes) {
-            $required = self::Required;
+        if ($linkedinProfileIsRequired == self::YES) {
+            $required = self::REQUIRED;
         }
 
         return $required;

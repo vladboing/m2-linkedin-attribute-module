@@ -6,10 +6,10 @@ use Magento\Eav\Model\AttributeRepositoryFactory;
 
 class Register extends \Magento\Customer\Block\Form\Register
 {
-    protected const No = 0;
-    protected const Yes = 1;
-    protected const NotVisible = null;
-    protected const NotRequired = null;
+    protected const NO = 0;
+    protected const YES = 1;
+    protected const NOT_VISIBLE = null;
+    protected const NOT_REQUIRED = null;
     protected $attributeRepository;
 
     /**
@@ -74,9 +74,9 @@ class Register extends \Magento\Customer\Block\Form\Register
      */
     public function getLinkedinVisibility()
     {
-        $visibility = self::NotVisible;
+        $visibility = self::NOT_VISIBLE;
         $linkedinProfileIsVisible = $this->attributeRepository->create()->get('customer', 'linkedin_profile')->getIsVisible();
-        if ($linkedinProfileIsVisible == self::No) {
+        if ($linkedinProfileIsVisible == self::NO) {
             $visibility = 'hidden';
         }
 
@@ -90,9 +90,9 @@ class Register extends \Magento\Customer\Block\Form\Register
      */
     public function getLinkedinIsRequired()
     {
-        $required = self::NotRequired;
+        $required = self::NOT_REQUIRED;
         $linkedinProfileIsRequired = $this->attributeRepository->create()->get('customer', 'linkedin_profile')->getIsRequired();
-        if ($linkedinProfileIsRequired == self::Yes) {
+        if ($linkedinProfileIsRequired == self::YES) {
             $required = 'required';
         }
 

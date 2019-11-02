@@ -11,13 +11,13 @@ class ConfigChange implements ObserverInterface
 {
     private $request;
     private $attributeRepository;
-    private const Visible = 1;
-    private const NotVisible = 0;
-    private const Required = 1;
-    private const NotRequired = 0;
-    private const IsHidden = 0;
-    private const IsOptional = 1;
-    private const IsRequired = 2;
+    private const VISIBLE = 1;
+    private const NOT_VISIBLE = 0;
+    private const REQUIRED = 1;
+    private const NOT_REQUIRED = 0;
+    private const IS_HIDDEN = 0;
+    private const IS_OPTIONAL = 1;
+    private const IS_REQUIRED = 2;
 
     /**
      * ConfigChange constructor.
@@ -43,17 +43,17 @@ class ConfigChange implements ObserverInterface
     {
         $linkedinProfileAttribute = $this->attributeRepository->get('customer', 'linkedin_profile');
         $linkedinParamValue = $this->request->getParam('groups')['account_information']['fields']['linkedin_profile']['value'];
-        if ($linkedinParamValue == self::IsHidden) {
-            $linkedinProfileAttribute->setIsVisible(self::NotVisible)
-                ->setIsRequired(self::NotRequired);
+        if ($linkedinParamValue == self::IS_HIDDEN) {
+            $linkedinProfileAttribute->setIsVisible(self::NOT_VISIBLE)
+                ->setIsRequired(self::NOT_REQUIRED);
             $this->attributeRepository->save($linkedinProfileAttribute);
-        } elseif ($linkedinParamValue == self::IsOptional) {
-            $linkedinProfileAttribute->setIsVisible(self::Visible)
-                ->setIsRequired(self::NotRequired);
+        } elseif ($linkedinParamValue == self::IS_OPTIONAL) {
+            $linkedinProfileAttribute->setIsVisible(self::VISIBLE)
+                ->setIsRequired(self::NOT_REQUIRED);
             $this->attributeRepository->save($linkedinProfileAttribute);
-        } elseif ($linkedinParamValue == self::IsRequired) {
-            $linkedinProfileAttribute->setIsVisible(self::Visible)
-                ->setIsRequired(self::Required);
+        } elseif ($linkedinParamValue == self::IS_REQUIRED) {
+            $linkedinProfileAttribute->setIsVisible(self::VISIBLE)
+                ->setIsRequired(self::REQUIRED);
             $this->attributeRepository->save($linkedinProfileAttribute);
         }
         return $this;
